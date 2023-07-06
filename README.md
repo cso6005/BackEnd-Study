@@ -7,7 +7,7 @@
 | --- | --- |
 | 최소영 | https://github.com/cso6005?tab=repositories |
 | 김현정 | https://github.com/HyunJng?tab=repositories |
-| 김형준 |  |
+| 김형준 | https://github.com/Kim-Hyeong-June |
 
 ### 📌 진행 일정
 
