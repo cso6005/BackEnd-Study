@@ -5,7 +5,7 @@
 
 | 스터디원 |  깃허브 주소 |
 | --- | --- |
-| 최소영 | https://github.com/cso6005?tab=repositories |
+| 최소영 | https://github.com/cso6005 |
 | 김현정 | https://github.com/HyunJng?tab=repositories |
 | 김형준 | https://github.com/Kim-Hyeong-June |
 
