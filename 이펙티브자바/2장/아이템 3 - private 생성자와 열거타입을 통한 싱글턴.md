@@ -1,3 +1,8 @@
+# [아이템 3] private 생성자와 열거타입을 통한 싱글턴
+
+![](https://velog.velcdn.com/images/trendsetter/post/93bf9146-a7de-4486-809a-6774c3903085/image.jpg)
+
+
 아이템 3를 설명하기 앞서 우선 `singleton`에 대한 전반적인 이해가 필요하다.
 ### Singleton Pattern
 
@@ -95,3 +100,7 @@ public class MyService{
     	logger.log("Doing something");
     }
 }
+``` 
+
+
+
