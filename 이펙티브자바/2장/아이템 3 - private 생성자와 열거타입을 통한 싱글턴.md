@@ -102,5 +102,91 @@ public class MyService{
 }
 ``` 
 
+이렇게 하면 **'MyService'** 클래스는 'ConsoleLogger'싱글턴 빈을 사용하여 로깅기능을 수행할 수 있다. 여러 클래스에서 **'Logger'** 인터페이스를 주입받아 사용하더라도 항상 같은 **'ConsoleLogger'** 인스턴스를 공유하게 된다.
+
+위의 케이스는
+1. `의존성 주입`
+2. `Mock 객체`(**'Logger'** Mock 객체를 생성하여 테스트 할때는 실제 로깅이 발생하지 않음)사용
+   3.`단일 인스턴스`(테스트시에도 동일한 인스턴스가 사용되어 테스트간 상태 공유나 인스턴스 생성에 따른 부작용을 방지하여 테스트의 일관성+의존성 향상)
+
+이 3가지의 이유로 테스트가 수월해진다.
+
+
+## 싱글턴을 만드는 방식
+이제 싱글턴을 만드는 2가지 방식에 대해 알아본다.
+
+1. public static 멤버가 final 필드인 방식
+2. 정적 팩터리 메서드를 public static 멤버로 제공
+
+>공통점
+
+두 방식 모두
+
+1. 생성자는 `private`으로 감춰두고,
+2. 유일한 인스턴스에 접근할 수 있는 수단으로 `public static` 멤버를 하나 마련해둔다.
+
+### public static 멤버가 final 필드인 방식
+
+```java 
+public class Elvis{
+	public static final Elvis INSTANCE = new Elvis(); // 방법 1
+    private Elvis() {...}	// 생성자는 private
+    
+    public void leaveTheBuilding() {
+    	return INSTANCE;
+    }
+}
+```
+
+위의 코드에서 `private` 생성자는 public static final 필드인 `Elvis.INSTANCE`를 초기화 할 때 **"딱 한번만 호출"**된다.
+
+Elvis.INSTANCE필드는 클래스가 초기화 될 때 단 한번 생성되고, final키워드로 인해 다른 곳에서 변경할 수 없는 상수로 선언된다.
+
+leaveTheBuilding() 메서드는 INSTANCE 필드를 반환하여 클래스의 인스턴스를 얻을 수 있도록 한다.
+
+이를 통해 다음과 같이 클래스의 인스턴스가 하나임이 보장된다.
+
+```java
+Elvis obj1 = Elvis.leaveTheBuilding();
+Elvis obj2 = Elvis.leaveTheBuilding();
+
+System.out.println(obj1 == obj2);	// true
+```
+
+위의 예시에서 'obj1'과 'obj2'는 leaveTheBuilding() 메서드를 통해 동일한 Elvis 인스턴스를 얻으므로, obj1==obj2는 true를 출력한다.
+이는 Elvis 클래스의 인스턴스가 전체 시스템에서 하나임이 보장되는 것을 보여준다. (클라인트가 수정 불가)
+
+>장점
+>> 1. 해당 클래스가 싱글턴임이 API에 명백히 드러난다.
+>> - public static 필드가 final이니 절대로 다른 객체를 참조할 수 없다.
+>> 2. 간결함
+
+예외는 리플렉션 API(`아이템 65`)인 `AccessibleObject.setAccessible`을 사용해 private 생성자를 호출할 수 있는 것이다.
+
+위 공격을 방어하려면 생성자를 수정해 두 번째 객체가 생성되려 할 때 예외를 던지면 된다. 
+
+### 정적 팩터리 메서드를 public static 멤버로 제공
+
+```java
+public class Elvis {
+	private static final Elvis INSTANCE = new Elvis();
+    private Elvis() {...}
+    public static Elvis getInstance() { return INSTANCE; }	
+    //같은 객체의 참조 반환
+    
+    public void leaveTheBuilding() {...}
+}
+```
+
+Elvis.getInstance()는 항상 같은 객체의 참조를 반환하므로 한개의 인스턴스만 생성된다.
+
+>장점
+>> 1. API를 바꾸지 않고도 싱클턴이 아니게 변경
+      - 유일한 인스턴스를 반환하던 팩토리 메서드(`객체 생성 처리`)가 호출하는 스레드별로 다른 인스턴스를 넘겨주게 함
+>> 2. 원한다면 정적 팩터리를 제너릭 싱글턴 팩터리(아이템 30)으로 만들 수 있다.
+>> 3. 정적 팩터리의 메서드 참조를 공급자로 사용
+
+
+
 
 
