@@ -6,7 +6,6 @@
 | 스터디원  | 깃허브 주소 |
 | --- | --- |
 | 최소영 | https://github.com/cso6005 |
-| 김형준 | https://github.com/Kim-Hyeong-June |
 | 오지민 | https://github.com/TrendCatcher |
 | 최재호 | https://github.com/jaero0725 |
 
