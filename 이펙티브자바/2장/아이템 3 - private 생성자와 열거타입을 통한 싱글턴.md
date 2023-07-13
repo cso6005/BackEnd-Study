@@ -1,4 +1,5 @@
 # [아이템 3] private 생성자와 열거타입을 통한 싱글턴
+[벨로그 정리글](https://velog.io/@trendsetter/Item-3-private-%EC%83%9D%EC%84%B1%EC%9E%90%EC%99%80-%EC%97%B4%EA%B1%B0%ED%83%80%EC%9E%85%EC%9D%84-%ED%86%B5%ED%95%9C-%EC%8B%B1%EA%B8%80%ED%84%B4)
 
 ![](https://velog.velcdn.com/images/trendsetter/post/93bf9146-a7de-4486-809a-6774c3903085/image.jpg)
 
@@ -133,7 +134,7 @@ public class Elvis{
     private Elvis() {...}	// 생성자는 private
     
     public void leaveTheBuilding() {
-    	return INSTANCE;
+    	
     }
 }
 ```
@@ -147,8 +148,8 @@ leaveTheBuilding() 메서드는 INSTANCE 필드를 반환하여 클래스의 인
 이를 통해 다음과 같이 클래스의 인스턴스가 하나임이 보장된다.
 
 ```java
-Elvis obj1 = Elvis.leaveTheBuilding();
-Elvis obj2 = Elvis.leaveTheBuilding();
+Elvis obj1 = Elvis.INSTANCE;
+Elvis obj2 = Elvis.INSTANCE;
 
 System.out.println(obj1 == obj2);	// true
 ```
