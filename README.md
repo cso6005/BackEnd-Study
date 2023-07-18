@@ -7,6 +7,7 @@
 | --- | --- |
 | 최소영 | https://github.com/cso6005 |
 | 오지민 | https://github.com/TrendCatcher |
+| 이병성 | https://github.com/goodcodings |
 | 최재호 | https://github.com/jaero0725 |
 
 ### 📌 진행 일정
