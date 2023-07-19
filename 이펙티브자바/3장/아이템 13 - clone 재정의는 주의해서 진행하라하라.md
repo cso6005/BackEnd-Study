@@ -135,14 +135,14 @@ public static class Age {
     public static class Person implements Cloneable {
         private final String name;
         @Override
-    		// 공변성으로 인해 반환 타입의 인스턴스를 자기 자신으로 반환 가능
-    		// 리스코프 치환 원칙, 최상위 부모 객체가 Object임으로 가능
+        // 공변성으로 인해 반환 타입의 인스턴스를 자기 자신으로 반환 가능
+        // 리스코프 치환 원칙, 최상위 부모 객체가 Object임으로 가능
         // Object로 반환 가능 하지만 호출하는쪽에서 타입캐스팅을 해줘야한다
         public Person clone() { 
             try {
                 return (Person) super.clone(); 
             } catch (Exception c) {
-    						log.error(c.getMessage());
+                log.error(c.getMessage());
                 return null;
             }
         }
@@ -375,6 +375,7 @@ public static class Age {
 
          - 하지만…… clone 메소드는 얕은 복사를 하기 때문에 copy와 origin의 element 배열 자체는 서로 다른 주소를 참조하고 있지만 배열 안의 값은 같은 주소를 참조하고 있어
          copy에서 값을 변경하면 origin에도 영향을 준다
+
          ![스크린샷 2023-07-19 오전 12.38.55.png](https://github.com/cso6005/BackEnd-Study/assets/51026414/b5584a4a-f34a-4307-bdd7-b82427eca96f)
 
      2. 가변 객체 내부에 또 다른 가변 객체가 있을 경우
