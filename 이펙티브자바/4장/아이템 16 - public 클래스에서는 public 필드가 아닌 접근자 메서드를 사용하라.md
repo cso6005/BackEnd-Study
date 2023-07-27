@@ -62,6 +62,15 @@ public class ColorPoint {
     }
 }
 ```
+> 정적 중첩 클래스 
+
+- static 으로 선언한다. (Static Nested Class)
+- "밖에 있는 클래스(`ColoPoint`)"의 변수와 메소드 중에 `static`이 붙은 것도 사용가능
+- 중첩 클래스는 `static` 키워드가 안 붙었다면 사용할 수 없다. 
+- Outer 클래스의 객체가 없어도 Inner 클래스의 객체 생성이 가능하다. 
+  - `ColorPoint.Point point = new ColorPoint.Point();`
+  
+---
 
 - `private`(또는 `package-private`) 클래스를 중첩시키면 탑 클래스(제일 바깥 클래스) 외부에서는 Point 클래스의 필드에 접근하는 것이 불가능하다. 하지만, ColorPoint에서는 Point 클래스 필드 조작이 가능하다.
 
