@@ -9,15 +9,15 @@
 
 이번 아이템은 각각의 중첩 클래스를 언제, 왜 사용해야 되는지 필요성에 대해 다뤄보고자 한다.
 
-## 중첩클래스
+# 중첩클래스
 중첩클래스는 다름 클래스 안에 정의된 클래스를 말한다.
 중첩클래스는
 
 (1) 자신을 감싼 바깥 클래스에서만 사용되어야 하며,
 (2) 그외의 쓰임새가 있다면 톱레벨 클래스(파일명과 동일한 .java 클래스)로 만들어야 한다.
 
-### 정적, 비정적 멤버 클래스
-#### 선언
+## 정적, 비정적 멤버 클래스
+### 선언
 둘의 차이는 `static` 예약어가 클래스에 같이 작성되어 있는지로 판단된다.
 
 ```java
@@ -42,7 +42,7 @@ class A{
 ```
 위의 코드에서 B는 비정적 내부 클래스이다.
 
-#### 생성
+### 생성
 
 static의 존재 여부에 따라 해당 내부 클래스를 생성하는 방식이 달라진다.
 
@@ -67,14 +67,14 @@ void foo(){
 ```
 비정적 클래스의 객체 선언의 경우 반드시 A 객체를 생성한 뒤 객체를 이용해 생성해야 한다. 즉, 비정적 내부 클래스는 바깥클래스에 대한 참조가 필요하다.
 
-#### 참조
+### 참조
 클래스를 컴파일해 `.class`로 변환한 뒤 `Diassembler`결과를 확인하여 참조를 확인해본다.
 정적 내부 클래스가 멤버변수와 기본 생성자만을 참조로 가지고 있는 것과 달리, 비정적 내부 클래스는 추가로, <u>바깥클래스의 참조</u>를 가지고 있다.
 
 이는 메모리 누수의 가능성이 있다. 바깥 클래스는 더 이상 사용되지 않지만 내부 클래스의 참조로 인해 GC가 수거하지 못해 바깥클래스이 메모리 해제를 못하는 경우가 발생한다.
 
 
-#### 특징
+### 특징
 
 정적 멤버 클래스의 주목할만한 특징은 다음과 같다.
 
@@ -104,8 +104,8 @@ class OuterClass [
     }
 }
 ```
-
-#### 필요성 및 사용시기
+private 정적 멤버 클래스는 흔히 바깥 클래스가 표현하는 객체의 한 부분을 나타낼 때 쓴다.
+### 필요성 및 사용시기
 
 정적 멤버 클래스는 흔히 바깥 클래스와 함께 쓰일 때만 유용한 public 도우미 클래스로 쓰인다. 다음은 Operation 열거 타입이 Calculator클래스의 public 정적 멤버가 되어야하는 예시이다.
 
@@ -155,4 +155,35 @@ public class MySet<E> extends AbstractSet<E>{
 
 <u>**멤버 클래스에서 바깥 인스턴스에 접근할 일이 없다면 static을 붙여 정적 멤버 클래스로 만들자**</u>고 저자는 강조한다.
 
-이유는 앞에서 언급했듯, GC가 바깥 클래스의 인스턴스를 수거하지 못해 메모리 누수가 발생한다늠 점에서 기인한다. 
+이유는 앞에서 언급했듯, GC가 바깥 클래스의 인스턴스를 수거하지 못해 메모리 누수가 발생한다는 점에서 기인한다.
+
+### 익명 클래스
+익명 클래스는 이름이 없고 바깥클래스의 멤버도 아니다. 멤버와 달리 쓰이는 시점에 선언과 동시에 인스턴스가 만들어진다. 그리고 오직 비정적인 문맥에서 사용될 때만 바깥 클래스의 인스턴스를 참조할 수 있다.
+```java
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyApplicationContextListener {
+
+    // 익명 클래스로 ApplicationListener를 구현합니다.
+    private ApplicationListener<ContextRefreshedEvent> myListener = new ApplicationListener<ContextRefreshedEvent>() {
+        @Override
+        public void onApplicationEvent(ContextRefreshedEvent event) {
+            // 이벤트 핸들러에서 실행될 로직을 정의합니다.
+            System.out.println("Spring 컨텍스트가 새로고침되었습니다.");
+            // 추가적인 작업을 수행할 수 있습니다.
+        }
+    };
+
+    // 생성된 익명 클래스의 인스턴스를 리턴합니다.
+    public ApplicationListener<ContextRefreshedEvent> getMyListener() {
+        return myListener;
+    }
+}
+```
+
+
+반면에 응용하는데 제약이 많아진다.
+선언한 지점에서만 인스턴스를 만들 수 있고, instanceof 검사나 클래스의 이름이 필요한 작업은 수행 불가하다. 
